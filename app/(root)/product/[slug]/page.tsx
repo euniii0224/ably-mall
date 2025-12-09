@@ -11,9 +11,11 @@ import { Button } from '@/components/ui/button'
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  const product = await getProductBySlug(params.slug)
+  const { slug } = await params
+
+  const product = await getProductBySlug(slug)
   if (!product) {
     return { title: 'Product not found' }
   }
@@ -23,12 +25,16 @@ export async function generateMetadata({
   }
 }
 
-const ProductDetails = async ({
-  params: { slug },
-}: {
-  params: { slug: string }
-  searchParams: { page: string; color: string; size: string }
+const ProductDetails = async (props: {
+  params: Promise<{ slug: string }>
+  searchParams: Promise<{
+    page: string
+    color: string
+    size: string
+  }>
 }) => {
+  const { slug } = await props.params
+
   const product = await getProductBySlug(slug)
   if (!product) notFound()
 

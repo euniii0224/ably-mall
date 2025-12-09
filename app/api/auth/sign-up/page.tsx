@@ -13,17 +13,19 @@ import {
 } from '@/components/ui/card'
 import { APP_NAME } from '@/lib/constants'
 
-import CredentialsSignInForm from './credentials-signin-form'
+import SignUpForm from './signup-form'
 
 export const metadata: Metadata = {
-  title: `Sign In - ${APP_NAME}`,
+  title: `Sign Up - ${APP_NAME}`,
 }
 
-export default async function SignIn(props: {
-  searchParams: Promise<{ callbackUrl?: string }>
+export default async function SignUp({
+  searchParams: { callbackUrl },
+}: {
+  searchParams: {
+    callbackUrl: string
+  }
 }) {
-  const { callbackUrl } = await props.searchParams
-
   const session = await auth()
   if (session) {
     return redirect(callbackUrl || '/')
@@ -41,13 +43,13 @@ export default async function SignIn(props: {
               alt={`${APP_NAME} logo`}
             />
           </Link>
-          <CardTitle className="text-center">Sign In</CardTitle>
+          <CardTitle className="text-center">Create Account</CardTitle>
           <CardDescription className="text-center">
-            Select a method to sign in to your account
+            Enter your information below to create your account
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <CredentialsSignInForm />
+        <CardContent>
+          <SignUpForm />
         </CardContent>
       </Card>
     </div>
